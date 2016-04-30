@@ -11,7 +11,7 @@
                 factory(module['exports'] || exports);  // module.exports is for Node.js
             } else {
                 // [3] No module loader (plain <script> tag) - put directly in global namespace
-                window["mvcct"] = mvcct = window["mvcct"] || {};
+                var mvcct = window["mvcct"]  = window["mvcct"] || {};
                 factory(mvcct['enhancer'] = {});
             }
         }(
@@ -25,7 +25,7 @@
                 var oldReady = null;
                 var baseEvent = "_enhancer.dependency.";
                 var dependencyOnPathAttribute = "data-enhancer-dependency";
-                jQuery = window["jQuery"];
+                var jQuery = window["jQuery"];
                 if (jQuery) {
                     oldReady = jQuery.fn.ready;
                     jQuery.fn.ready = function (x) {
@@ -128,9 +128,9 @@
                             try {
                                 sourceNode.setAttribute(dependencyOnPathAttribute, "true");
                                 action(targetNode, sourceNode);
-                                //var ev = document.createEvent("Event");
-                                //ev.initEvent(baseEvent + name, false, true);
-                                //targetNode.dispatchEvent(ev);
+                                var ev = document.createEvent("Event");
+                                ev.initEvent(baseEvent + name, false, true);
+                                targetNode.dispatchEvent(ev);
 
                             }
                             finally {
@@ -155,6 +155,7 @@
                     };
                 }
                 enhancer["removeDependency"] = function (handle) {
+                    var events = handle.events;
                     for (var i = 0; i < events.length; i++)
                         handle.sourceNode.removeEventListener(events[i], handle.triggerF);
                     handle.sourceNode.removeEventListener(handle.name, handle.mainF);
@@ -295,7 +296,7 @@
                         packInfosForServer();
                     }
                     function processAllNodes(ancestor) {
-                        if (ancestor.tagName == "INPUT") process(node);
+                        if (ancestor.tagName == "INPUT") process(ancestor);
                         else {
                             var allInputs = ancestor.querySelectorAll("input");
                             for (var i = 0; i < allInputs.length; i++) process(allInputs[i]);

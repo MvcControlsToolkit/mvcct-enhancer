@@ -3,9 +3,6 @@
   "version": "1.0.0-rc1",
   "description": "a javascript package to handle standard html enhancements",
   "main": "mvcct.enhancer.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/MvcControlsToolkit/mvcct-enhancer.git"
@@ -16,12 +13,19 @@
     "html5",
     "polyfill"
   ],
+  "readme": "a javascript package to handle standard html enhancements",
   "author": "Mvc Controls Toolkit Team",
   "license": "https://github.com/MvcControlsToolkit/mvcct-enhancer/blob/master/LICENSE.txt",
   "bugs": {
     "url": "https://github.com/MvcControlsToolkit/mvcct-enhancer/issues"
   },
   "homepage": "https://github.com/MvcControlsToolkit/mvcct-enhancer",
+  "files": [
+    "LICENSE.txt",
+    "mvcct.enhancer.d.ts",
+    "mvcct.enhancer.js",
+    "mvcct.enhancer.min.js"
+  ],
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-closure-compiler": "^0.4.0"

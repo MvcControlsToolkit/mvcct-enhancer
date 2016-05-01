@@ -27,8 +27,8 @@
                 var dependencyOnPathAttribute = "data-enhancer-dependency";
                 var jQuery = window["jQuery"];
                 if (jQuery) {
-                    oldReady = jQuery.fn.ready;
-                    jQuery.fn.ready = function (x) {
+                    oldReady = jQuery["fn"]["ready"];
+                    jQuery["fn"]["ready"] = function (x) {
                         enhancer["register"](null, x, null, "document.ready: "+x.constructor.name, true)
                     };
                 }
@@ -84,8 +84,8 @@
                 enhancer["init"] = function (options) {
                     options = options || {};
                     if (jQuery) {
-                        jQuery.fn.ready = oldReady;
-                        jQuery(document).ready(function () { init(options); });
+                        jQuery["fn"]["ready"] = oldReady;
+                        jQuery(document)["ready"](function () { init(options); });
                     }
                     else init(options);
                 };
@@ -165,13 +165,13 @@
                     var originalSupport = autodetect();
                     var processedSupport = {};
                     var html5Infos = {
-                        Html5InputOriginalSupport: originalSupport,
-                        Html5InputSupport: processedSupport
+                        "Html5InputOriginalSupport": originalSupport,
+                        "Html5InputSupport": processedSupport
                     };
                     var html5ProcessInfos = null;//describe required processing based on user options and defaults
                     var html5ProcessInfosDefaults = {
-                        cookie: "_browser_basic_capabilities",
-                        forms: null
+                        "cookie": "_browser_basic_capabilities",
+                        "forms": null
                     };
                     var handlers = null;
                     enhancer["getSupport"] = function () {
@@ -212,67 +212,67 @@
                     function autodetect() {
                         //html5 auto detection
                         return {
-                            number: !needFallback('number'),
-                            range: !needFallback('range'),
-                            date: !needFallback('date'),
-                            month: !needFallback('month'),
-                            week: !needFallback('week'),
-                            time: !needFallback('time'),
-                            datetime: !needFallback('datetime-local'),
-                            email: !needFallback('email'),
-                            search: !needFallback('search'),
-                            tel: !needFallback('tel'),
-                            url: !needFallback('url'),
-                            color: !needFallback('color')
+                            "number": !needFallback('number'),
+                            "range": !needFallback('range'),
+                            "date": !needFallback('date'),
+                            "month": !needFallback('month'),
+                            "week": !needFallback('week'),
+                            "time": !needFallback('time'),
+                            "datetime": !needFallback('datetime-local'),
+                            "email": !needFallback('email'),
+                            "search": !needFallback('search'),
+                            "tel": !needFallback('tel'),
+                            "url": !needFallback('url'),
+                            "color": !needFallback('color')
                         }
                     }
                     function packInfosForServer() {
                         //pack html5Infos in cookie and or hidden field for server
                         var infos = [];
-                        addToOptions("Html5InputSupport", html5Infos.Html5InputSupport, infos);
-                        addToOptions("Html5InputOriginalSupport", html5Infos.Html5InputOriginalSupport, infos);
+                        addToOptions("Html5InputSupport", html5Infos["Html5InputSupport"], infos);
+                        addToOptions("Html5InputOriginalSupport", html5Infos["Html5InputOriginalSupport"], infos);
                         var sInfos = JSON.stringify(infos);
-                        if (html5ProcessInfos.forms) {
+                        if (html5ProcessInfos["forms"]) {
                             var flist = document.querySelectorAll('form');
                             for (var i = 0; i < flist.length; i++)
                             {
                                 var input = document.createElement("input");
                                 input.setAttribute("type", "hidden");
-                                input.setAttribute("name", html5ProcessInfos.forms);
+                                input.setAttribute("name", html5ProcessInfos["forms"]);
                                 input.setAttribute("value", sInfos);
                                 flist[i].appendChild(input);
                             }
                         }
-                        if (html5ProcessInfos.cookie) {
-                            document.cookie = html5ProcessInfos.cookie + "=" + encodeURIComponent(sInfos) + "; path=/";
+                        if (html5ProcessInfos["cookie"]) {
+                            document.cookie = html5ProcessInfos["cookie"] + "=" + encodeURIComponent(sInfos) + "; path=/";
                         }
                     }
                     function preProcessOptions(options, entry) {
-                        var fallbacks = options.fallbacks;
+                        var fallbacks = options["fallbacks"];
                         for (var prop in originalSupport) {
                             var support = originalSupport[prop];
                             var fallback = fallbacks[prop];
-                            if (support && (!fallback || !fallback.force)) processedSupport[prop] = 4;
+                            if (support && (!fallback || !fallback["force"])) processedSupport[prop] = 4;
                             else if (!fallback) processedSupport[prop] = 1;
-                            else processedSupport[prop] = fallback.type;
+                            else processedSupport[prop] = fallback["type"];
                         }
                     }
                     function processOptions(options, entry) {
                         options = options || {};
                         html5ProcessInfos = {
-                            fallbackHtml5: options.fallbackHtml5 === undefined ? true : options.fallbackHtml5,
-                            cookie: options.cookie === undefined ? html5ProcessInfosDefaults.cookie : options.cookie,
-                            forms: options.forms === undefined ? html5ProcessInfosDefaults.forms : options.forms,
-                            fallbacks: options.fallbacks || {},
-                            handlers: {}
+                            "fallbackHtml5": options["fallbackHtml5"] === undefined ? true : options["fallbackHtml5"],
+                            "cookie": options["cookie"] === undefined ? html5ProcessInfosDefaults["cookie"] : options["cookie"],
+                            "forms": options["forms"] === undefined ? html5ProcessInfosDefaults["forms"] : options["forms"],
+                            "fallbacks": options["fallbacks"] || {},
+                            "handlers": {}
                         };
-                        if (!html5ProcessInfos.fallbackHtml5) {
+                        if (!html5ProcessInfos["fallbackHtml5"]) {
                             entry.initialize = false;
                             return;
                         }
-                        if (!options.handlers || !options.handlers.replace)
+                        if (!options["handlers"] || !options["handlers"]["replace"])
                         {
-                            html5ProcessInfos.handlers.replace = function (type, support) {
+                            html5ProcessInfos["handlers"]["replace"] = function (type, support) {
                                 if (type == "number" || type == "date" || type == "datetime-local" || type == "month" || type == "time" || type == "week")
                                     return "text";
                                 else if (type == "range") {
@@ -282,16 +282,16 @@
                                 else return type;
                             };
                         }
-                        else html5ProcessInfos.handlers.replace = options.handlers.replace;
-                        if (!options.handlers || !options.handlers.translateVal)
-                            html5ProcessInfos.handlers.translateVal = function (val, type, el) { return val; }
-                        else html5ProcessInfos.handlers.translateVal = options.handlers.translateVal;
+                        else html5ProcessInfos["handlers"]["replace"] = options["handlers"]["replace"];
+                        if (!options["handlers"] || !options["handlers"]["translateVal"])
+                            html5ProcessInfos["handlers"]["translateVal"] = function (val, type, el) { return val; }
+                        else html5ProcessInfos["handlers"]["translateVal"] = options["handlers"]["translateVal"];
                         //compute html5Infos and html5ProcessInfos
 
                         
-                        handlers = html5ProcessInfos.handlers;
-                        handlers.fullReplace = options && options.handlers ? options.handlers.fullReplace : null;
-                        handlers.enhance = options && options.handlers ? options.handlers.enhance : {};
+                        handlers = html5ProcessInfos["handlers"];
+                        handlers["fullReplace"] = options && options["handlers"] ? options["handlers"]["fullReplace"] : null;
+                        handlers["enhance"] = options && options["handlers"] ? options["handlers"]["enhance"] : {};
                         
                         packInfosForServer();
                     }
@@ -306,21 +306,21 @@
                         var type = node.getAttribute("type");
                         var stype = type == "datetime-local" ? "datetime" : type;
                         if (processedSupport[stype] > 3) return;
-                        var replace = handlers.replace(type, processedSupport);
+                        var replace = handlers["replace"](type, processedSupport);
                         if (replace == type) return;
-                        if (handlers.fullReplace) {
-                            handlers.fullReplace(node);
+                        if (handlers["fullReplace"]) {
+                            handlers["fullReplace"](node);
                             return;
                         }
                         var input = document.createElement("input");
                         input.setAttribute("type", replace);
-                        input.setAttribute("value", handlers.translateVal(node.getAttribute("value"), stype, node));
+                        input.setAttribute("value", handlers["translateVal"](node.getAttribute("value"), stype, node));
                         copyAttrs(node, input);
                         node.parentNode.replaceChild(input, node);
-                        if (handlers.enhance && handlers.enhance[type]) handlers.enhance[type](input);
+                        if (handlers["enhance"] && handlers["enhance"][type]) handlers["enhance"][type](input);
                     }
-                    enhancer["register"](null, false, function (options) { options = options || {}; preProcessOptions(options.browserSupport) }, "html5 support", true);
-                    enhancer["register"](processAllNodes, true, function (options) { options = options || {}; processOptions(options.browserSupport) }, "html5 enhance", false);
+                    enhancer["register"](null, false, function (options) { options = options || {}; preProcessOptions(options["browserSupport"]) }, "html5 support", true);
+                    enhancer["register"](processAllNodes, true, function (options) { options = options || {}; processOptions(options["browserSupport"]) }, "html5 enhance", false);
                 }(enhancer));
 
                 //Finish actual code

@@ -1,6 +1,6 @@
 {
   "name": "mvcct-enhancer",
-  "version": "1.0.0-rc1a",
+  "version": "1.0.0-rc1b",
   "description": "a javascript package to handle standard html enhancements",
   "main": "mvcct.enhancer.js",
   "repository": {

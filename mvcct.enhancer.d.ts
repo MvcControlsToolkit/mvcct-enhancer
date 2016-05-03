@@ -23,7 +23,7 @@
             forms: string;
             fallbacks: InputSupportOptions;
         }
-        interface Html5InputOriginalSupport {
+        export interface Html5InputOriginalSupport {
             number: boolean;
             range: boolean;
             date: boolean;
@@ -51,8 +51,18 @@
             url: number;
             color: number;
         }
+        export interface Formats{
+            dateFormat: string;
+            timeFormat: string;
+            timeFormat1: string;
+            datetimeFormat: string;
+            datetimeFormat1: string;
+            monthFormat: string;
+            weekFormat: string;
+        }
         export interface Options {
             browserSupport?: BrowserSupportOptions;
+            editFormats?: Formats;
             [propName: string]: any;
         }
         export interface Html5Infos {
@@ -76,6 +86,7 @@
             action: (targetNode: HTMLElement, sourceNode: HTMLElement) => void): any;
         export function removeDependency(handle: any): void;
         export function getSupport(): Html5Infos;
+        export function addBasicInput(globalize: any);
     }
 }
 

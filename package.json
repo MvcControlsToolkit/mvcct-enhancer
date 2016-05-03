@@ -24,7 +24,9 @@
     "LICENSE.txt",
     "mvcct.enhancer.d.ts",
     "mvcct.enhancer.js",
-    "mvcct.enhancer.min.js"
+    "mvcct.enhancer.min.js",
+    "enhancer-modules/mvcct.enhancer.input.basic.js",
+    "enhancer-modules/mvcct.enhancer.input.basic.min.js"
   ],
   "devDependencies": {
     "gulp": "^3.9.1",

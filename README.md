@@ -23,6 +23,8 @@ not supported by the browser or that the developer would like to substitute with
 1. writing simple wrappers around already existing modules
 2. registering the wrapped module by calling the `.register(...)` method.
 
+**mvcct-enhancer, is available both on bower, and npm.**
+
 ## Html Enhancer with pure synchronous javascript loading
 ```
 

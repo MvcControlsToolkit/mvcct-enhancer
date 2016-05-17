@@ -20,18 +20,18 @@
         }
         
         export interface EnhancementProcessors{
-            number?: (node: HTMLHtmlElement) => void;
-            range?: (node: HTMLHtmlElement) => void;
-            date?: (node: HTMLHtmlElement) => void;
-            month?: (node: HTMLHtmlElement) => void;
-            week?: (node: HTMLHtmlElement) => void;
-            time?: (node: HTMLHtmlElement) => void;
-            datetime?: (node: HTMLHtmlElement) => void;
-            email?: (node: HTMLHtmlElement) => void;
-            search?: (node: HTMLHtmlElement) => void;
-            tel?: (node: HTMLHtmlElement) => void;
-            url?: (node: HTMLHtmlElement) => void;
-            color?: (node: HTMLHtmlElement) => void;
+            number?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            range?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            date?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            month?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            week?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            time?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            datetime?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            email?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            search?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            tel?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            url?: (node: HTMLElement, originalNode: HTMLElement) => void;
+            color?: (node: HTMLElement, originalNode: HTMLElement) => void;
         }
         
         export interface Html5FallbackHandler{
@@ -75,6 +75,20 @@
             url: number;
             color: number;
         }
+        export interface Html5InputFallbackWidgetsOptions{
+            number?: any;
+            range?: any;
+            date?: any;
+            month?: any;
+            week?: any;
+            time?: any;
+            datetime?: any;
+            email?: any;
+            search?: any;
+            tel?: any;
+            url?: any;
+            color?: any;
+        }
         export interface Formats{
             dateFormat?: string;
             timeFormat?: string;
@@ -86,6 +100,7 @@
         }
         export interface Options {
             browserSupport?: BrowserSupportOptions;
+            html5FallbackWidgets?: Html5InputFallbackWidgetsOptions;
             editFormats?: Formats;
             runReady?: boolean;
             [propName: string]: any;
@@ -113,8 +128,8 @@
         export function removeDependency(handle: any): void;
         export function getSupport(): Html5Infos;
         export function addBasicInput(Globalize: any);
-        export function format(type: string, value: any): string;
-        export function parse(type: string, value: string): any;
+        export function format(type: string, value: any, invariant?: boolean): string;
+        export function parse(type: string, value: string, invariant?: boolean): any;
         export function Globalize(): any;
     }
 }

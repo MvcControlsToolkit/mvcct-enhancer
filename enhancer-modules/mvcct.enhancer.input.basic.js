@@ -22,9 +22,9 @@
                 var defaults = {
                     "dateFormat": { "date": "short" },
                     "timeFormat": { "skeleton": "Hms" },
-                    "timeFormat1": { "skeleton": "Hm" },
-                    "datetimeFormat": { "skeleton": "yMdHms" },
-                    "datetimeFormat1": { "skeleton": "yMdHm" },
+                    "timeFormat1": { "skeleton": "Hms" },
+                    "datetimeFormat": { "datetime": "short" },
+                    "datetimeFormat1": { "datetime": "short" },
                     "monthFormat": { "date": "short" },
                     "weekFormat": { "date": "short" }
                 };
@@ -215,6 +215,15 @@
                             "month": support["month"]>2 ? neutralMonthParser : localMonthParser,
                             "week": support["week"]>2 ? getDateOfISOWeek : localWeekParser
                      };
+                      var dictI = {
+                            "range": parseFloat,
+                            "number": parseFloat,
+                            "time": gtimeParser,
+                            "datetime": gDatetimeParser,
+                            "date": neutralDateParser,
+                            "month": neutralMonthParser,
+                            "week": getDateOfISOWeek
+                     };
                      var fdict = {
                             "range": support["range"]>2 ? function(x){return x+"";} : numberFormatter,
                             "number":support["number"]>2 ? function(x){return x+"";} : numberFormatter,
@@ -224,15 +233,24 @@
                             "month": support["month"]>2 ? neutralMonthFormatter : monthFormatter,
                             "week": support["week"]>2 ? getIsoWeek : weekFormatter
                      }; 
-                     Enhancer["format"]=function(type, val){
+                     var fdictI = {
+                            "range": function(x){return x+"";},
+                            "number": function(x){return x+"";},
+                            "time":  neutralTimeFormatter,
+                            "datetime": neutralDateTimeFormatter,
+                            "date": neutralDateFormatter,
+                            "month": neutralMonthFormatter,
+                            "week": getIsoWeek
+                     }; 
+                     Enhancer["format"]=function(type, val, invariant){
                          if(!val && val !== 0 ) return "";
-                         var formatter = fdict[type];
+                         var formatter = (invariant ? fdictI : fdict)[type];
                          if(formatter) return formatter(val);
                          else return val;
                      } 
-                     Enhancer["parse"]=function(type, val){
+                     Enhancer["parse"]=function(type, val, invariant){
                          if(!val ) return null;
-                         var parser = dict[type];
+                         var parser = (invariant ? dictI : dict)[type];
                          if(parser) return parser(val);
                          else return parser;
                      } 

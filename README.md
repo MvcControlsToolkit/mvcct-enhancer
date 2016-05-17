@@ -224,6 +224,9 @@ fallback module is loaded and registered by calling the mvcct.enhancer method `a
 then Html5 fallback is automatically turned on. and all Html5 inputs that are not supported are transformed 
 into text inputs and their content is converted into the current "locale" (this means, for instance, that dates are transformed 
 from the date input ISO format into a format like mm/dd/yy).
+Available, also a more complete fallback based on bootstrap widgets: [bootstrap-html5-fallback](https://github.com/MvcControlsToolkit/bootstrap-html5-fallback). 
+When `bootstrap.html5.fallback.js` is loaded after `mvcct.enhancer.input.basic.js` the `addBasicInput(Globalize)`
+is updated to load also all bootstrap widgets.
 
 As a default the following [Globalize](https://github.com/jquery/globalize) "locale" formats are used: 
 
@@ -231,9 +234,9 @@ As a default the following [Globalize](https://github.com/jquery/globalize) "loc
 {
      dateFormat: { "date": "short" },
      timeFormat: { "skeleton": "Hms" },
-     timeFormat1: { "skeleton": "Hm" },
-     datetimeFormat: { "skeleton": "yMdHms" },
-     datetimeFormat1": { "skeleton": "yMdHm" },
+     timeFormat1: { "skeleton": "Hms" },
+     datetimeFormat: { "datetime": "short" },
+     datetimeFormat1": { "datetime": "short" },
      monthFormat: { "date": "short" },
      weekFormat: { "date": "short" }
 };
@@ -310,14 +313,17 @@ when reading/setting input fields. In order to simplify input field access, when
 the Htm5 inputs support-detection and fallback module adds two helper methods to the enhancer object, namely:
 
 ```
-.format(type, value) 
-.parse(type, stringValue)
+.format(type, value, [invariant]) 
+.parse(type, stringValue, [invariant])
 
 ```
 Both methods takes the type of the original Html5 input as first argument("date", "time", etc.). `format` 
 takes a javascript object (date or number depending on the input time) and transforms it in a properly formatted 
 string, while `parse` performs the inverse transformation. I case of fallback the formats specified in 
-`editFormats`(or their defaults) are used.
+`editFormats`(or their defaults) are used. If the third optional argument is true parsing/formatting are 
+done using the invariant culture (the one used by native Html5 inputs), otherwise the right culture is auto-detected.
+Forcing the invariant culture may be useful for some custom processing of the original input field (for instance 
+processing min/max or step attributes to set some fallback widget options). 
 
 ## Adding widgets to Htm5 input fallback
 One may also add easily widgets(date, datetime, time pickers, siders, etc) to the basic input fallback, 
@@ -395,7 +401,8 @@ dependency(name,//string
            action: // invoked function function(targetNode, sourceNode) => void); 
 )
 ```
-`name` identifies the type of dependency. When the value of an input is changed programmatically, dependency propagation
+`name` identifies the type of dependency. If you want your dependencies interact globally with all others, please set **name="main"**.
+When the value of an input is changed programmatically, dependency propagation
 may be started by triggering the `"_enhancer.dependency."+name` event.
 
 **IMPORTANT!**, since mvcct.enhancer doesnt depend on jQuery all above events are not defined with jQuery.

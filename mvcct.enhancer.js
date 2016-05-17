@@ -278,7 +278,7 @@
                         if (!options["handlers"] || !options["handlers"]["replace"])
                         {
                             html5ProcessInfos["handlers"]["replace"] = function (type, support) {
-                                if (type == "number" || type == "date" || type == "datetime-local" || type == "month" || type == "time" || type == "week")
+                                if (type == "number" || type == "date" || type == "datetime-local" || type == "month" || type == "time" || type == "week" || type == "color")
                                     return "text";
                                 else if (type == "range") {
                                     if (support.range > 2 || support.number < 4) return "text";
@@ -322,10 +322,11 @@
                         input.setAttribute("type", replace);
                         input.setAttribute("value", handlers["translateVal"](node.getAttribute("value"), stype, replace));
                         copyAttrs(node, input);
+                        if(type == "range") input.setAttribute("data-is-range", "true");
                         node.parentNode.replaceChild(input, node);
-                        if (handlers["enhance"] && handlers["enhance"][type]) handlers["enhance"][type](input);
+                        if (handlers["enhance"] && handlers["enhance"][stype]) handlers["enhance"][stype](input, node);
                     }
-                    enhancer["register"](null, false, null, "html5 support", function (options) { options = options || {}; preProcessOptions(options["browserSupport"]) });
+                    enhancer["register"](null, false, function (options) { options = options || {}; preProcessOptions(options["browserSupport"]) }, "html5 support");
                     enhancer["register"](processAllNodes, true, function (options) { options = options || {}; processOptions(options["browserSupport"]) }, "html5 enhance");
                 }(enhancer));
 

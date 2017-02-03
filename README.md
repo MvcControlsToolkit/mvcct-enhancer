@@ -223,7 +223,9 @@ As a default no fallback attempt is performed. However, if the `mvcct.enhancer.i
 fallback module is loaded and registered by calling the mvcct.enhancer method `addBasicInput(Globalize)`, 
 then Html5 fallback is automatically turned on. and all Html5 inputs that are not supported are transformed 
 into text inputs and their content is converted into the current "locale" (this means, for instance, that dates are transformed 
-from the date input ISO format into a format like mm/dd/yy).
+from the date input ISO format into a format like mm/dd/yy). Moreover, if version >= 1.0.2 the original input type
+is stored in the `data-original-type` attribute.
+
 Available, also a more complete fallback based on bootstrap widgets: [bootstrap-html5-fallback](https://github.com/MvcControlsToolkit/bootstrap-html5-fallback). 
 When `bootstrap.html5.fallback.js` is loaded after `mvcct.enhancer.input.basic.js` the `addBasicInput(Globalize)`
 is updated to load also all bootstrap widgets.
@@ -306,7 +308,12 @@ Setting `force` to true forces the usage of the available fallback, while type s
 provided fallback.
 
 All well written fallback modules shoud automatically set the type in the pre-processing stage(The mvcct.enhancer.basic.input module do it!).
-
+## Time zone processing (starting from version 1.0.2)
+If a `datetime-local` input has the attribute `data-is-utc="true"`, then its value is assumed to be an UTC date/time. This value is converted 
+into the local time zone during the input processing stage. Moreover, it is assumed that the element after the `datetime-local` input is an input type "hidden"
+where to store the date/time time-zone offset (that in general depends on the specific date/time value). 
+Accordingly, each time the input field is modified by the user, this associated input field is automatically 
+updated with the time zone offset of the newly inseted value. 
 ## Reading and setting input values
 Since input formats for native support and fallback might differ, support checks must be done 
 when reading/setting input fields. In order to simplify input field access, when it is loaded, 

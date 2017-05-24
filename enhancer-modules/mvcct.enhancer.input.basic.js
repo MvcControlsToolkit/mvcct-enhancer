@@ -252,12 +252,12 @@
                          if(!val ) return null;
                          var parser = (invariant ? dictI : dict)[type];
                          if(parser) return parser(val);
-                         else return parser;
+                         else return val;
                      } 
                             
                 }
                 Enhancer["addBasicInput"]=function(Globalize){
-                    Enhancer["register"](null, false, initializeOptions, "html5 globalized fallback", function(x) {initialize(x, Globalize);});
+                    Enhancer["register"](null, false, initializeOptions, "html5 globalized fallback", function(x) {initialize(x, Globalize);}, 'html5-input');
                 }
 
                 //Finish actual code

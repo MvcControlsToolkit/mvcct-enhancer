@@ -104,18 +104,20 @@
                     if (asyncReady) enhancer["init"](options);
                     waitAsync = options || {};
                 };
-                enhancer["register"] = function (transform, initialize, processOptions, name, preProcessOptions) {
+                enhancer["register"] = function (transform, initialize, processOptions, name, preProcessOptions, type) {
                     transformations.push({
                         transform: transform,
                         initialize: initialize,
                         processOptions: processOptions,
                         name: name,
-                        preProcessOptions: preProcessOptions
+                        preProcessOptions: preProcessOptions,
+                        type: type
                     });
                 };
-                enhancer["transform"] = function (node) {
+                enhancer["transform"] = function (node, types) {
                     for (var i = 0; i < transformations.length; i++) {
                         var item = transformations[i];
+                        if(types && !types[item.type || 'default']) continue;
                         if (item.transform) {
                             try {
                                 item.transform(node, false);
@@ -371,8 +373,8 @@
                         var input = document.createElement("input");
                         input.setAttribute("type", replace);
                         input.setAttribute("value", handlers["translateVal"](node.getAttribute("value"), stype, replace));
-                        input.setAttribute("data-original-type", type);
                         copyAttrs(node, input);
+                        input.setAttribute("data-original-type", type);
                         if(type == "range") input.setAttribute("data-is-range", "true");
                         node.parentNode.replaceChild(input, node);
                         if(addListener) addOffsetDetect (input);

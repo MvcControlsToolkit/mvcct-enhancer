@@ -194,6 +194,39 @@ transformations registration module.
 **IMPORTANT!** Our examples used just AMD style async loading, but mvcct.enhancer supports
 also CommonJs/Node.Js loading.
 
+## Selective enhancement
+
+Version 1.1.0 introduced selective enhancements to allow several client side technologies to coexist in the same page and use mvcct-enhancer. The `register` method has a new optional `type` argument:
+
+```
+register(
+            transform: (node: HTMLElement, isInitialize?: boolean) => void,
+            initialize: boolean,
+            processOptions: (options: Options) => void,
+            name: string,
+            preProcessOptions: (options: Options) => void,
+            type?: string): void;
+```
+When provided the `type` argument assigns a type to the module, so that one may enhance just modules of specific types. At moment built-in modules have either the 'html5-input' (for html5 inputs fallback) or the 'unobtrusive-validation' (for unobtrusive validation) types.
+
+The `transform` function has an optional `types` argument:
+
+```
+transform(node: HTMLElement, types?: any): void;
+```
+
+When provided it is an object whose properties (that must be set to `true`) are the module types to be transformed. Thus, for instance, if we would like to apply just htm5 fallback we must set the `types` argument to:
+
+```
+{
+    "html5-input": true
+}
+```
+
+If no `types` argument is passed all registered modules are applied.
+
+if no type is specified when registering a module that module is always applied.
+
 ## TypeScript support
 The distribution contains the .d.ts header file needed to use mvcct enhamcer with TypeScript.  
 
